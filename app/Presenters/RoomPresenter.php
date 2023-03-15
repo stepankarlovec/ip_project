@@ -8,7 +8,7 @@ use App\Model\Room;
 use Nette;
 
 
-final class HomepagePresenter extends Nette\Application\UI\Presenter
+final class RoomPresenter extends Nette\Application\UI\Presenter
 {
     public function __construct(
         private Room $room,
@@ -18,8 +18,10 @@ final class HomepagePresenter extends Nette\Application\UI\Presenter
         $this->template->rooms = $this->room->getRooms();
     }
 
-    public function renderRooms(){
+    public function renderRoom($id){
 
+        $this->template->room = $this->room->getRoom($id);
+        $this->template->avgSalary = $this->room->getRoomAverageSalary($id);
     }
 
 }

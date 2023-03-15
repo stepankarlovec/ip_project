@@ -1,0 +1,26 @@
+{block content}
+    <div class="container">
+        <div class="my-2">
+            <label>Room id: {$room->room_id}</label>
+            <h1>{$room->name}</h1>
+            <div class="d-flex flex-column" style="width: 25%">
+                <div class="d-flex flex-row justify-content-between">
+                    <label><b>Telefon:</b></label>
+                    <p>{$room->phone}</p>
+                </div>
+                <div class="d-flex flex-row justify-content-between">
+                    <label><b>Lidé:</b></label>
+                    <p>{$room->phone}</p>
+                </div>
+                <div class="d-flex flex-row justify-content-between">
+                    <label><b>Průměrná mzda:</b></label>
+                    <p>{ifset $avgSalary}{$avgSalary}{else}-{/ifset}</p>
+                </div>
+                <div class="d-flex flex-row justify-content-between">
+                    <label><b>Klíče:</b></label>
+                    <p>{$room->phone}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}

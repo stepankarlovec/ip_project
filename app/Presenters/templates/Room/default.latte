@@ -1,0 +1,29 @@
+{block content}
+    <div class="container">
+        <div class="my-2">
+            <h1>Rooms</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Číslo</th>
+                    <th scope="col">Název</th>
+                    <th scope="col">Telefon</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    {foreach $rooms as $room}
+                        <tr class="align-items-center">
+                            <th scope="row">{$room->room_id}</th>
+                            <td>{$room->no}</td>
+                            <td><a class="text-decoration-none" href="/room/{$room->room_id}">{$room->name}</a></td>
+                            <td>{$room->phone}</td>
+                            <td class="text-danger"><a class="btn btn-danger" href="#">Edit</a></td>
+                        </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{/block}
