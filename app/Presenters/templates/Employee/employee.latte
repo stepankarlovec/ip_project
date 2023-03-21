@@ -1,0 +1,41 @@
+{block content}
+    <div class="container">
+        <div class="my-2">
+            <h1>{$employee->krestni} {$employee->prijmeni}</h1>
+            <div class="d-flex flex-column" style="width: 30%">
+                <div class="d-flex flex-row justify-content-between">
+                    <label><b>Křestní:</b></label>
+                    <p>{$employee->krestni}</p>
+                </div>
+                <div class="d-flex flex-row justify-content-between">
+                    <label><b>Příjmení:</b></label>
+                    <p>{$employee->prijmeni}</p>
+                </div>
+                <div class="d-flex flex-row justify-content-between">
+                    <label><b>Práce:</b></label>
+                    <p>{$employee->job}</p>
+                </div>
+                <div class="d-flex flex-row justify-content-between">
+                    <label><b>Místnost:</b></label>
+                    <p>
+                        <a href="/room/{$employee->room_idd}">
+                        {$employee->room_name}
+                        </a>
+                    </p>
+                </div>
+                <div class="d-flex flex-row justify-content-between">
+                    <label><b>Mzda:</b></label>
+                    <p>{$employee->wage}</p>
+                </div>
+                <div class="d-flex flex-row justify-content-between">
+                    <label><b>Klíče:</b></label>
+                    <div class="d-flex flex-column">
+                    {foreach $rooms as $room}
+                        <a href="/room/{$room->room_id}">{$room->jmeno_klice}</a>
+                    {/foreach}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}

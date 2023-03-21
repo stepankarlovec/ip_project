@@ -9,3 +9,4 @@ search:
 services:
 	- App\Router\RouterFactory::createRouter
 	- App\Model\Room
+	- App\Model\Employee

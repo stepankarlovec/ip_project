@@ -1,0 +1,31 @@
+{block content}
+    <div class="container">
+        <div class="my-2">
+            <h1>Employees</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Jméno</th>
+                    <th scope="col">Místnost</th>
+                    <th scope="col">Telefon</th>
+                    <th scope="col">Pozice</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach $employees as $employee}
+                    <tr class="align-items-center">
+                        <th scope="row">{$employee->employee_id}</th>
+                        <td><a class="text-decoration-none" href="/employee/{$employee->employee_id}">{$employee->name} {$employee->surname}</a></td>
+                        <td><a class="text-decoration-none" href="/room/{$employee->room_id}">{$employee->room_name}</a></td>
+                        <td>{$employee->phone}</td>
+                        <td>{$employee->job}</td>
+                        <td class="text-danger"><a class="btn btn-danger" href="/employee/{$employee->employee_id}/edit">Edit</a></td>
+                    </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{/block}
