@@ -19,7 +19,11 @@
                             <td>{$room->no}</td>
                             <td><a class="text-decoration-none" href="/room/{$room->room_id}">{$room->name}</a></td>
                             <td>{$room->phone}</td>
-                            <td class="text-danger"><a class="btn btn-danger" href="#">Edit</a></td>
+                            {if ($user->roles[0] === 1)}
+                                <td class="text-danger"><a class="btn btn-danger" href="/room/{$room->room_id}/edit">Edit</a></td>
+                                {else}
+                                <td class="text-danger"><a class="btn btn-outlined-danger disabled" href="#">Edit</a></td>
+                            {/if}
                         </tr>
                     {/foreach}
                 </tbody>

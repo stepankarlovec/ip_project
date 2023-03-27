@@ -1,37 +1,40 @@
 {block content}
-<header>
-    <div class="px-3 py-2 text-bg-dark">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center">
-                <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-                    <li>
-                        <a href="/" class="nav-link text-white">
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/room" class="nav-link text-white">
-                            Rooms
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/employee" class="nav-link text-white">
-                            Employees
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            Keys
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            Users
-                        </a>
-                    </li>
-                </ul>
+    <header>
+        <div class="px-3 py-2 text-bg-dark">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center">
+                    <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                        <li>
+                            <a href="/" class="nav-link text-white">
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/room" class="nav-link text-white">
+                                Rooms
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/employee" class="nav-link text-white">
+                                Employees
+                            </a>
+                        </li>
+                        {if !$user->isLoggedIn()}
+                            <li>
+                                <a href="/login" class="nav-link text-white btn btn-primary">
+                                    Login
+                                </a>
+                            </li>
+                            {else}
+                            <li>
+                                <a href="/logout" class="nav-link text-white btn btn-secondary">
+                                    Logout
+                                </a>
+                            </li>
+                        {/if}
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 {/block}

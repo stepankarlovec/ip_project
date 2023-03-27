@@ -1,0 +1,14 @@
+{block content}
+    <div class="container my-2">
+
+        {if ($user->roles[0] === 1)}
+            <h1>Create employee</h1>
+            {control createEmployee}
+        {else}
+            <h1>you shouldn't be here</h1>
+            <p>i could redirect you directly but this is funnier, please <a n:href="Homepage:default">go back</a></p>
+
+        {/if}
+    </div>
+
+{/block}

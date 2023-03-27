@@ -10,3 +10,5 @@ services:
 	- App\Router\RouterFactory::createRouter
 	- App\Model\Room
 	- App\Model\Employee
+	- App\Model\User
+	security.passwords: Nette\Security\Passwords(::PASSWORD_BCRYPT, [cost: 12])

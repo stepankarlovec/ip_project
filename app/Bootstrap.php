@@ -27,6 +27,8 @@ class Bootstrap
 		$configurator->addConfig($appDir . '/config/services.neon');
 		$configurator->addConfig($appDir . '/config/local.neon');
 
+        $configurator->setDebugMode(FALSE);
+
 		return $configurator;
 	}
 }

@@ -21,7 +21,11 @@
                         <td><a class="text-decoration-none" href="/room/{$employee->room_id}">{$employee->room_name}</a></td>
                         <td>{$employee->phone}</td>
                         <td>{$employee->job}</td>
-                        <td class="text-danger"><a class="btn btn-danger" href="/employee/{$employee->employee_id}/edit">Edit</a></td>
+                        {if ($user->roles[0] === 1) || $user->identity->getData()['employee_id'] === $employee->employee_id}
+                            <td class="text-danger"><a class="btn btn-danger" href="/employee/{$employee->employee_id}/edit">Edit</a></td>
+                            {else}
+                            <td class="text-danger"><a class="btn btn-outlined-danger disabled" href="#">Edit</a></td>
+                        {/if}
                     </tr>
                 {/foreach}
                 </tbody>

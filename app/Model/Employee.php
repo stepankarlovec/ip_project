@@ -17,8 +17,24 @@ final class Employee
                     'surname' => $data->surname,
                     'job' => $data->job,
                     'room' => $data->room,
-                    'wage' => $data->wage
+                    'wage' => $data->wage,
+                    'login' => $data->login,
+                    'admin' => $data->admin,
                 ]);
+    }
+
+    public function createEmployee($data){
+        return $this->database
+            ->table('employee')
+            ->insert([
+                'name' => $data->name,
+                'surname' => $data->surname,
+                'job' => $data->job,
+                'room' => $data->room,
+                'wage' => $data->wage,
+                'login' => $data->login,
+                'admin' => $data->admin
+            ]);
     }
 
     public function getEmployeeKeys($id){
@@ -42,6 +58,14 @@ final class Employee
             }
     }
 
+    public function changePassword(string $password, $id){
+        $this->database->table('employee')
+            ->where('employee_id', $id)
+            ->update([
+                'password' => $password
+            ]);
+    }
+
     public function getEmployees(){
         return $this->database
             ->query("SELECT e.employee_id, e.name,e.surname, r.name as 'room_name', r.phone, r.room_id, e.job FROM `employee` e INNER JOIN room r ON e.room = r.room_id")
@@ -50,7 +74,7 @@ final class Employee
 
     public function getEmployee($id){
         return $this->database
-            ->query("SELECT e.name as krestni, e.surname as prijmeni, e.job, e.wage, r.name as `room_name`, r.room_id as `room_idd`, r2.name as `jmeno_klice`, r2.room_id 
+            ->query("SELECT e.name as krestni, e.surname as prijmeni, e.admin as admin, e.job, e.wage, e.login as login, r.name as `room_name`, r.room_id as `room_idd`, r2.name as `jmeno_klice`, r2.room_id 
 FROM employee AS `e` 
 Inner join room as `r` on (e.room = r.room_id) 
 Inner join `key` as `k` on (k.employee = e.employee_id) 

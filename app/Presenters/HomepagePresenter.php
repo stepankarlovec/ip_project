@@ -19,7 +19,4 @@ final class HomepagePresenter extends Nette\Application\UI\Presenter
         $this->template->rooms = $this->room->getRooms();
     }
 
-    public function renderRooms(){
-
-    }
 }

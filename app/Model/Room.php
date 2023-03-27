@@ -39,6 +39,15 @@ final class Room
             ]);
     }
 
+    public function createRoom($data){
+        return $this->database->table('room')
+            ->insert([
+                'no' => $data->no,
+                'name' => $data->name,
+                'phone' => $data->phone
+            ]);
+    }
+
     // working with employees
     public function getRoomAverageSalary($id){
         return $this->database
