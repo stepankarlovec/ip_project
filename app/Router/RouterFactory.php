@@ -21,6 +21,8 @@ final class RouterFactory
         $router->addRoute('room/new', 'Room:create');
         $router->addRoute('room/<id>/edit', 'Room:edit');
         $router->addRoute('employee/<id>/edit', 'Employee:edit');
+        $router->addRoute('room/<id>/delete', 'Room:delete');
+        $router->addRoute('employee/<id>/delete', 'Employee:delete');
         $router->addRoute('room/<id>', 'Room:room');
         $router->addRoute('employee/<id>', 'Employee:employee');
         $router->addRoute('room', 'Room:default');

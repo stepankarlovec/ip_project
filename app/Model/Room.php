@@ -8,6 +8,16 @@ final class Room
     public function __construct(private Nette\Database\Explorer $database) {
     }
 
+    public function deleteRoom($id){
+        $this->database->table('key')
+            ->where('room', $id)
+            ->delete();
+
+        return $this->database->table('room')
+            ->where('room_id', $id)
+            ->delete();
+    }
+
     public function getRooms()
     {
         return $this->database

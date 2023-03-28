@@ -1,7 +1,10 @@
 {block content}
     <div class="container">
         <div class="my-2">
-            <h1>Rooms</h1>
+            <div class="d-flex w-100 justify-content-between">
+                <h1>Rooms</h1>
+                <a n:href="Room:create" class="btn btn-primary pt-2">new</a>
+            </div>
             <table class="table">
                 <thead>
                 <tr>
@@ -21,8 +24,10 @@
                             <td>{$room->phone}</td>
                             {if ($user->roles[0] === 1)}
                                 <td class="text-danger"><a class="btn btn-danger" href="/room/{$room->room_id}/edit">Edit</a></td>
-                                {else}
+                                <td class="text-warning"><a class="btn btn-warning" n:href="Room:delete, $room->room_id">Delete</a></td>
+                            {else}
                                 <td class="text-danger"><a class="btn btn-outlined-danger disabled" href="#">Edit</a></td>
+                                <td class="text-warning"><a class="btn btn-outlined-warning disabled" href="#">Delete</a></td>
                             {/if}
                         </tr>
                     {/foreach}

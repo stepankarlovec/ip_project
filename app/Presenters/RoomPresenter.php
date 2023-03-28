@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
+use App\Model\Employee;
 use App\Model\Room;
 use Nette;
 use Nette\Application\UI\Form;
@@ -16,14 +17,19 @@ final class RoomPresenter extends BasePresenter
 
     public function __construct(
         private Room $room,
-    ) {}
+        private Employee $employee,
+    )
+    {
+    }
 
-    public function renderDefault(){
+    public function renderDefault()
+    {
         $this->template->rooms = $this->room->getRooms();
     }
 
-    public function renderRoom($id){
-        if(!$this->room->getRoom($id)){
+    public function renderRoom($id)
+    {
+        if (!$this->room->getRoom($id)) {
             $this->redirect("Room:default");
         }
         $this->template->room = $this->room->getRoom($id);
@@ -33,17 +39,53 @@ final class RoomPresenter extends BasePresenter
         $this->template->random = $this->room->random($id);
     }
 
-    public function actionEdit($id){
+    public function actionEdit($id)
+    {
+        $this->isAdminOrError();
         $this->id = $id;
         $this->setView("edit-room");
     }
 
-    public function actionCreate($id){
+    public function actionDelete($id)
+    {
+        $this->isAdminOrError();
+        $this->id = $id;
+        $this->deleteRoomDetail($id);
+        if ($this->user->identity->getData()['employee_id'] === $id) {
+            $this->user->logout();
+        }
+        $this->redirect('Homepage:default');
+    }
+
+    private function deleteRoomDetail($id)
+    {
+        $this->isAdminOrError();
+        $employees = $this->employee->getEmployees();
+        $isDeletable = true;
+        foreach ($employees as $employee) {
+            if ($employee['room_id'] == $id) {
+                $isDeletable = false;
+                $this->flashMessage("Room is assigned to an employee " . $employee['name'] . " " . $employee['surname'] . ", please change employees room", "warning");
+            }
+        }
+
+        if ($isDeletable) {
+            $this->room->deleteRoom($id);
+            $this->flashMessage("Successfully deleted", "warning");
+            $this->redirect('Room:default');
+        } else {
+            $this->redirect('Room:default');
+        }
+    }
+
+    public function actionCreate($id)
+    {
         $this->id = $id;
         $this->setView("new-room");
     }
 
-    protected function createComponentCreateRoom(): Form{
+    protected function createComponentCreateRoom(): Form
+    {
         $form = new Form();
         $form->addText("name", "Name:")
             ->setRequired('Please fill name of the room');
@@ -64,15 +106,16 @@ final class RoomPresenter extends BasePresenter
             try {
                 $this->room->createRoom($data, $this->id);
                 $this->flashMessage("Successfully created :)", "warning");
-            }catch (\ErrorException $e){
+            } catch (\ErrorException $e) {
                 $this->flashMessage("Something went wrong :(", "danger");
                 Debugger::log($e);
             }
         }
     }
 
-    protected function createComponentEditRoom(): Form{
-        if(!$this->room->getRoom($this->id)){
+    protected function createComponentEditRoom(): Form
+    {
+        if (!$this->room->getRoom($this->id)) {
             $this->redirect("Room:default");
         }
         $room = $this->room->getRoom($this->id);
@@ -97,7 +140,7 @@ final class RoomPresenter extends BasePresenter
             try {
                 $this->room->updateRoom($data, $this->id);
                 $this->flashMessage("Successfully edited :)", "warning");
-            }catch (\ErrorException $e){
+            } catch (\ErrorException $e) {
                 $this->flashMessage("Something went wrong :(", "danger");
                 Debugger::log($e);
             }

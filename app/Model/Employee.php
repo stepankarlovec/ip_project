@@ -8,6 +8,16 @@ final class Employee
     public function __construct(private Nette\Database\Explorer $database) {
     }
 
+    public function deleteEmployee($id){
+        $this->database->table('key')
+            ->where('employee', $id)
+            ->delete();
+
+        return $this->database->table('employee')
+            ->where('employee_id', $id)
+            ->delete();
+    }
+
     public function editEmployee($data, $id){
             return $this->database
                 ->table('employee')

@@ -18,4 +18,11 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter{
             $this->redirect('Auth:login');
         }
     }
+
+    public function isAdminOrError():void{
+        if(!$this->user->roles[0]===1){
+            $this->flashMessage("For this event, you need to be an administrator");
+            $this->redirect("Homepage:default");
+        }
+    }
 }

@@ -31,9 +31,9 @@ class User implements Nette\Security\Authenticator
             ->fetch();
 
         if (!$row) {
-            throw new Nette\Security\AuthenticationException('Uživatel s tímto loginem nenalezen.');
+            throw new Nette\Security\AuthenticationException('User with this login not found.');
         } elseif (!$this->passwords->verify($password, $row['password'])) {
-            throw new Nette\Security\AuthenticationException('Špatně zadané heslo.');
+            throw new Nette\Security\AuthenticationException('Incorrect password.');
         } elseif ($this->passwords->needsRehash($row['password'])) {
             $row->update([
                 'password' => $this->passwords->hash($password),

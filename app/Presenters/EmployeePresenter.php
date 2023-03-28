@@ -35,14 +35,36 @@ final class EmployeePresenter extends BasePresenter
         $this->template->rooms = $tmp;
     }
 
+    public function actionDelete($id){
+        $this->id = $id;
+        $this->deleteEmployeeDetail($id);
+        if($this->user->identity->getData()['employee_id']===$id) {
+            $this->user->logout();
+            $this->redirect('Homepage:default');
+        }else{
+            $this->flashMessage("Successfully deleted user", "warning");
+            $this->redirect('Employee:default');
+        }
+    }
+
+    private function deleteEmployeeDetail($id){
+        $this->isAdminOrError();
+        $this->employee->deleteEmployee($id);
+    }
+
     public function actionCreate(){
         $this->setView("new-employee");
     }
 
     public function actionEdit($id){
-        $this->id = $id;
-        $this->template->employee_id = $id;
-        $this->setView("edit-employee");
+        if($this->user->roles[0]===1 || $this->user->identity->getData()['employee_id']==$id) {
+            $this->id = $id;
+            $this->template->employee_id = $id;
+            $this->setView("edit-employee");
+        }else{
+            $this->flashMessage("For this event, you need to be an administrator or logged as the user");
+            $this->redirect("Homepage:default");
+        }
     }
 
     protected function createComponentEditEmployee(): Form{
@@ -76,6 +98,7 @@ final class EmployeePresenter extends BasePresenter
             ->setDefaultValue($currentEmployee->room_idd)
         ->setRequired('Please fill room');
         $form->addInteger("wage", "Wage:")
+            ->addRule($form::INTEGER, "Musí být číslo")
             ->setDefaultValue($currentEmployee->wage)
             ->setRequired('Please fill wage');
         $form->addCheckboxList("keys", "Keys", $rooms)
@@ -98,6 +121,8 @@ final class EmployeePresenter extends BasePresenter
 
     public function handleEditEmployee(Form $form, $data): void
     {
+        $this->isAdminOrError();
+
         if (isset($data) && $data) {
             try {
                 $this->employee->editEmployee($data, $this->id);
@@ -162,16 +187,21 @@ final class EmployeePresenter extends BasePresenter
 
     public function handleEditEmployeeSelf(Form $form, $data): void
     {
-        if (isset($data) && $data) {
-            try {
-                if(isset($data->password) && $data->password){
-                    $this->employee->changePassword($this->passwords->hash($data->password), $this->id);
+        if($this->user->identity->getData()['employee_id']==$this->id) {
+            if (isset($data) && $data) {
+                try {
+                    if (isset($data->password) && $data->password) {
+                        $this->employee->changePassword($this->passwords->hash($data->password), $this->id);
+                    }
+                    $this->flashMessage("Successfully edited password :)", "warning");
+                } catch (\ErrorException $e) {
+                    $this->flashMessage("Something went wrong :(", "danger");
+                    Debugger::log($e);
                 }
-                $this->flashMessage("Successfully edited password :)", "warning");
-            }catch (\ErrorException $e){
-                $this->flashMessage("Something went wrong :(", "danger");
-                Debugger::log($e);
             }
+        }else{
+            $this->flashMessage("For this event you need to be logged as the user", "warning");
+            $this->redirect("Homepage:default");
         }
     }
 
@@ -188,6 +218,7 @@ final class EmployeePresenter extends BasePresenter
         $form->addSelect("room", "Room:", $rooms)
             ->setRequired('Please fill room');
         $form->addInteger("wage", "Wage:")
+            ->addRule($form::INTEGER, "Musí být číslo")
             ->setRequired('Please fill wage');
         $form->addCheckboxList("keys", "Keys", $rooms);
 
@@ -206,6 +237,7 @@ final class EmployeePresenter extends BasePresenter
 
     public function handleCreateEmployee(Form $form, $data): void
     {
+        $this->isAdminOrError();
         if (isset($data) && $data) {
             try {
                 $employee = $this->employee->createEmployee($data);

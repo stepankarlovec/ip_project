@@ -31,6 +31,11 @@
                                     Logout
                                 </a>
                             </li>
+                            <li>
+                                <a n:href="Employee:employee, $user->identity->getData()['employee_id']" class="nav-link mx-3 text-white btn btn-primary">
+                                    {$user->identity->getData()['name']} {$user->identity->getData()['surname']}
+                                </a>
+                            </li>
                         {/if}
                     </ul>
                 </div>
